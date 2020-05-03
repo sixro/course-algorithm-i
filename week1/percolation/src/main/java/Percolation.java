@@ -55,6 +55,7 @@ public class Percolation {
             uf.union(i, bottomVirtualNode);
         } else if (isOpen(iBelow)) {
             uf.union(iBelow, i);
+            backwashuf.union(iBelow, i);
         }
 
         // left - right
