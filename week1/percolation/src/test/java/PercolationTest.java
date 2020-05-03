@@ -1,3 +1,4 @@
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -83,6 +84,18 @@ public class PercolationTest {
         p.open(3, 3);
         p.open(3, 4);
         assertTrue(p.percolates());
+    }
+
+    @Test
+    @Ignore
+    public void backwash() {
+        Percolation p = new Percolation(3);
+        p.open(1, 1);
+        p.open(2, 1);
+        p.open(3, 3);
+        p.open(3, 1);
+        assertTrue(p.percolates());
+        assertFalse(p.isFull(3, 3));
     }
 
 }
