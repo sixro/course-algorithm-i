@@ -10,6 +10,10 @@ public class PercolationStats {
 
     // perform independent trials on an n-by-n grid
     public PercolationStats(int n, int trials) {
+        if (n <= 0)
+            throw new IllegalArgumentException("n has to be major than 0");
+        if (trials <= 0)
+            throw new IllegalArgumentException("trials has to be major than 0");
         this.n = n;
         this.trials = trials;
 
@@ -28,12 +32,12 @@ public class PercolationStats {
 
     // low endpoint of 95% confidence interval
     public double confidenceLo() {
-        return -1d;
+        return mean() - (stddev() * 1.96d) / Math.sqrt(trials);
     }
 
     // high endpoint of 95% confidence interval
     public double confidenceHi() {
-        return -1d;
+        return mean() + (stddev() * 1.96d) / Math.sqrt(trials);
     }
 
     // test client (see below)
@@ -54,18 +58,17 @@ public class PercolationStats {
         int max = n * n;
         xt = new double[trials];
         for (int i = 0; i < trials; i++) {
+            StdRandom.setSeed(System.currentTimeMillis());
             Percolation percolation = new Percolation(n);
-            int x = 0;
             while (! percolation.percolates()) {
-                x++;
-
                 int row = StdRandom.uniform(n) +1;
                 int col = StdRandom.uniform(n) +1;
-                //System.out.println(row + ":" + col);
                 percolation.open(row, col);
             }
 
-            xt[i] = ((double) (x)) / max;
+            int os = percolation.numberOfOpenSites();
+            System.out.println(os + " / " + max);
+            xt[i] = ((double) os) / max;
         }
     }
 
