@@ -8,7 +8,10 @@ public class PercolationStats {
 
     private final int n;
     private final int trials;
-    private double[] xt;
+    private final double mean;
+    private final double stddev;
+    private final double conflo;
+    private final double confhi;
 
     public PercolationStats(int n, int trials) {
         if (n <= 0)
@@ -18,23 +21,41 @@ public class PercolationStats {
         this.n = n;
         this.trials = trials;
 
-        this.run();
+        int max = n * n;
+        double[] xt = new double[trials];
+        for (int i = 0; i < trials; i++) {
+            Percolation percolation = new Percolation(n);
+            while (!percolation.percolates()) {
+                int row = StdRandom.uniform(n) +1;
+                int col = StdRandom.uniform(n) +1;
+                percolation.open(row, col);
+            }
+
+            int os = percolation.numberOfOpenSites();
+            xt[i] = ((double) os) / max;
+        }
+
+        this.mean = StdStats.mean(xt);
+        this.stddev = StdStats.stddev(xt);
+        double m = stddev * CONFIDENCE_95 / Math.sqrt(trials);
+        this.conflo = mean - m;
+        this.confhi = mean + m;
     }
 
     public double mean() {
-        return StdStats.mean(xt);
+        return mean;
     }
 
     public double stddev() {
-        return StdStats.stddev(xt);
+        return stddev;
     }
 
     public double confidenceLo() {
-        return mean() - (stddev() * CONFIDENCE_95) / Math.sqrt(trials);
+        return conflo;
     }
 
     public double confidenceHi() {
-        return mean() + (stddev() * CONFIDENCE_95) / Math.sqrt(trials);
+        return confhi;
     }
 
     public static void main(String[] args) {
@@ -48,22 +69,6 @@ public class PercolationStats {
         StdOut.printf("95%% confidence interval = [ %s, %s ]\n",
             Double.toString(pstats.confidenceLo()),
             Double.toString(pstats.confidenceHi()));
-    }
-
-    private void run() {
-        int max = n * n;
-        xt = new double[trials];
-        for (int i = 0; i < trials; i++) {
-            Percolation percolation = new Percolation(n);
-            while (!percolation.percolates()) {
-                int row = StdRandom.uniform(n) +1;
-                int col = StdRandom.uniform(n) +1;
-                percolation.open(row, col);
-            }
-
-            int os = percolation.numberOfOpenSites();
-            xt[i] = ((double) os) / max;
-        }
     }
 
 }
