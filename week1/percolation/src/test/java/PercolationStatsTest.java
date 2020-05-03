@@ -9,6 +9,10 @@ public class PercolationStatsTest {
         System.out.println(pstats.mean());
     }
 
+    @Test public void main() {
+        PercolationStats.main(new String[]{ "200", "100" });
+    }
+
     // TODO ctor n <=0
     // TODO trials <= 0
 }
