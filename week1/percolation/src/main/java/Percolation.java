@@ -39,6 +39,7 @@ public class Percolation {
         numberOfOpenSites++;
         cells[i] = 1;
 
+        // above-below
         int iAbove = i -n;
         int iBelow = i +n;
         if (row == 1) {
@@ -50,6 +51,14 @@ public class Percolation {
             uf.union(i, bottomVirtualNode);
         } else if (isOpen(iBelow)) {
             uf.union(iBelow, i);
+        }
+
+        // left - right
+        if (col > 1 && isOpen(i -1)) {
+            uf.union(i -1, i);
+        }
+        if (col < n && isOpen(i +1)) {
+            uf.union(i +1, i);
         }
     }
 

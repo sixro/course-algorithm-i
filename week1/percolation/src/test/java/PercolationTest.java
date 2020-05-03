@@ -63,4 +63,19 @@ public class PercolationTest {
         assertEquals(2, p.numberOfOpenSites());
     }
 
+    @Test
+    public void percolates_5_5_with_open_sites_in_horz() {
+        Percolation p = new Percolation(5);
+        p.open(1, 1);
+        p.open(2, 1);
+        p.open(3, 1);
+        p.open(3, 5);
+        p.open(4, 5);
+        p.open(5, 5);
+        p.open(3, 2);
+        p.open(3, 3);
+        p.open(3, 4);
+        assertTrue(p.percolates());
+    }
+
 }

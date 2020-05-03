@@ -8,7 +8,6 @@ public class PercolationStats {
     private final int trials;
     private double[] xt;
 
-    // perform independent trials on an n-by-n grid
     public PercolationStats(int n, int trials) {
         if (n <= 0)
             throw new IllegalArgumentException("n has to be major than 0");
@@ -20,27 +19,22 @@ public class PercolationStats {
         this.run();
     }
 
-    // sample mean of percolation threshold
     public double mean() {
         return StdStats.mean(xt);
     }
 
-    // sample standard deviation of percolation threshold
     public double stddev() {
         return StdStats.stddev(xt);
     }
 
-    // low endpoint of 95% confidence interval
     public double confidenceLo() {
         return mean() - (stddev() * 1.96d) / Math.sqrt(trials);
     }
 
-    // high endpoint of 95% confidence interval
     public double confidenceHi() {
         return mean() + (stddev() * 1.96d) / Math.sqrt(trials);
     }
 
-    // test client (see below)
     public static void main(String[] args) {
         int n = Integer.parseInt(args[0]);
         int trials = Integer.parseInt(args[1]);
@@ -67,7 +61,6 @@ public class PercolationStats {
             }
 
             int os = percolation.numberOfOpenSites();
-            System.out.println(os + " / " + max);
             xt[i] = ((double) os) / max;
         }
     }

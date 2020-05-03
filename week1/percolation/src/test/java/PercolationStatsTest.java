@@ -11,7 +11,7 @@ public class PercolationStatsTest {
     }
 
     @Test
-    @Ignore
+    //@Ignore
     public void main() {
         PercolationStats.main(new String[]{ "200", "100" });
     }
@@ -36,5 +36,4 @@ public class PercolationStatsTest {
         new PercolationStats(2, 0);
     }
 
-    // TODO trials <= 0
 }
