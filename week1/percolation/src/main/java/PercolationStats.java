@@ -4,6 +4,8 @@ import edu.princeton.cs.algs4.StdStats;
 
 public class PercolationStats {
 
+    private static final double CONFIDENCE_95 = 1.96d;
+    
     private final int n;
     private final int trials;
     private double[] xt;
@@ -28,11 +30,11 @@ public class PercolationStats {
     }
 
     public double confidenceLo() {
-        return mean() - (stddev() * 1.96d) / Math.sqrt(trials);
+        return mean() - (stddev() * CONFIDENCE_95) / Math.sqrt(trials);
     }
 
     public double confidenceHi() {
-        return mean() + (stddev() * 1.96d) / Math.sqrt(trials);
+        return mean() + (stddev() * CONFIDENCE_95) / Math.sqrt(trials);
     }
 
     public static void main(String[] args) {
@@ -52,9 +54,8 @@ public class PercolationStats {
         int max = n * n;
         xt = new double[trials];
         for (int i = 0; i < trials; i++) {
-            StdRandom.setSeed(System.currentTimeMillis());
             Percolation percolation = new Percolation(n);
-            while (! percolation.percolates()) {
+            while (!percolation.percolates()) {
                 int row = StdRandom.uniform(n) +1;
                 int col = StdRandom.uniform(n) +1;
                 percolation.open(row, col);

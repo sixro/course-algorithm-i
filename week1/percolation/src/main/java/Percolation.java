@@ -3,7 +3,7 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 public class Percolation {
 
     private final int n;
-    private final int[] cells;
+    private final boolean[] cells;
     private final WeightedQuickUnionUF uf;
     private final int topVirtualNode;
     private final int bottomVirtualNode;
@@ -17,7 +17,7 @@ public class Percolation {
             throw new IllegalArgumentException("n has to be major than 0");
         this.n = n;
         int max = n * n;
-        this.cells = new int[max];
+        this.cells = new boolean[max];
         this.numberOfOpenSites = 0;
 
         this.topVirtualNode = max;
@@ -33,11 +33,11 @@ public class Percolation {
      */
     public void open(int row, int col) {
         int i = xyTo1D(row, col);
-        if (cells[i] == 1)
+        if (cells[i])
             return;
 
         numberOfOpenSites++;
-        cells[i] = 1;
+        cells[i] = true;
 
         // above-below
         int iAbove = i -n;
@@ -76,7 +76,7 @@ public class Percolation {
     }
 
     private boolean isOpen(int i) {
-        return cells[i] == 1;
+        return cells[i];
     }
 
     /**
@@ -114,7 +114,7 @@ public class Percolation {
         Percolation p = new Percolation(2);
         p.open(1, 1);
         p.open(2, 1);
-        if (! p.percolates())
+        if (!p.percolates())
             throw new IllegalStateException("Should percolate");
     }
 
