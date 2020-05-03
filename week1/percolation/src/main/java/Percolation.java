@@ -89,7 +89,7 @@ public class Percolation {
      * @see #isOpen(int, int)
      */
     public boolean isFull(int row, int col) {
-        return !isOpen(row, col);
+        return isOpen(row, col) && uf.find(xyTo1D(row, col)) == uf.find(topVirtualNode);
     }
 
     /**

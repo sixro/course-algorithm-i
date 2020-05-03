@@ -7,12 +7,10 @@ public class PercolationTest {
     @Test public void open() {
         Percolation p = new Percolation(1);
         assertFalse(p.isOpen(1, 1));
-        assertTrue(p.isFull(1, 1));
 
         p.open(1, 1);
 
         assertTrue(p.isOpen(1, 1));
-        assertFalse(p.isFull(1, 1));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -43,6 +41,15 @@ public class PercolationTest {
     @Test(expected = IllegalArgumentException.class)
     public void is_Open_with_col_major_than_N() {
         new Percolation(1).isOpen(1, 2);
+    }
+
+    @Test
+    public void is_Full() {
+        Percolation p = new Percolation(2);
+        p.open(1, 1);
+        assertFalse(p.isFull(2, 1));
+        p.open(2, 1);
+        assertTrue(p.isFull(2, 1));
     }
 
     @Test
