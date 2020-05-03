@@ -6,8 +6,6 @@ public class PercolationStats {
 
     private static final double CONFIDENCE_95 = 1.96d;
 
-    private final int n;
-    private final int trials;
     private final double mean;
     private final double stddev;
     private final double conflo;
@@ -18,8 +16,6 @@ public class PercolationStats {
             throw new IllegalArgumentException("n has to be major than 0");
         if (trials <= 0)
             throw new IllegalArgumentException("trials has to be major than 0");
-        this.n = n;
-        this.trials = trials;
 
         int max = n * n;
         double[] xt = new double[trials];
