@@ -16,12 +16,13 @@ public class Percolation {
         if (n <= 0)
             throw new IllegalArgumentException("n has to be major than 0");
         this.n = n;
-        this.cells = new int[n * n];
+        int max = n * n;
+        this.cells = new int[max];
         this.numberOfOpenSites = 0;
 
-        this.topVirtualNode = n;
-        this.bottomVirtualNode = n +1;
-        this.uf = new WeightedQuickUnionUF(n +2);
+        this.topVirtualNode = max;
+        this.bottomVirtualNode = max +1;
+        this.uf = new WeightedQuickUnionUF(max +2);
     }
 
     /**
