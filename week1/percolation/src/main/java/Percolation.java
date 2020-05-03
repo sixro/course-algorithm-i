@@ -101,7 +101,11 @@ public class Percolation {
     }
 
     public static void main(String[] args) {
-
+        Percolation p = new Percolation(2);
+        p.open(1, 1);
+        p.open(2, 1);
+        if (! p.percolates())
+            throw new IllegalStateException("Should percolate");
     }
 
     private int xyTo1D(int row, int col) {
