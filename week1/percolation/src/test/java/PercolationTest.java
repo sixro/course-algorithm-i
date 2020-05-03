@@ -45,6 +45,22 @@ public class PercolationTest {
         new Percolation(1).isOpen(1, 2);
     }
 
-    // throw isOpen/open/isFull x/y < 1 or > N
+    @Test
+    public void percolates_2_2() {
+        Percolation p = new Percolation(2);
+        p.open(1, 1);
+        p.open(2, 1);
+        assertTrue(p.percolates());
+        assertEquals(2, p.numberOfOpenSites());
+    }
+
+    @Test
+    public void do_not_percolate_2_2() {
+        Percolation p = new Percolation(2);
+        p.open(1, 1);
+        p.open(2, 2);
+        assertFalse(p.percolates());
+        assertEquals(2, p.numberOfOpenSites());
+    }
 
 }
