@@ -37,6 +37,8 @@ public class Percolation {
      */
     public void open(int row, int col) {
         int i = xyTo1D(row, col);
+        if (cells[i])
+            return;
 
         numberOfOpenSites++;
         cells[i] = true;
