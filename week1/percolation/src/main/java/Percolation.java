@@ -9,6 +9,8 @@ public class Percolation {
     private final int bottomVirtualNode;
     private int numberOfOpenSites;
 
+    private final WeightedQuickUnionUF backwashuf;
+
     /**
      * Creates n-by-n grid, with all sites initially blocked
      */
@@ -23,6 +25,8 @@ public class Percolation {
         this.topVirtualNode = max;
         this.bottomVirtualNode = max +1;
         this.uf = new WeightedQuickUnionUF(max +2);
+
+        this.backwashuf = new WeightedQuickUnionUF(max +1);
     }
 
     /**
@@ -33,8 +37,6 @@ public class Percolation {
      */
     public void open(int row, int col) {
         int i = xyTo1D(row, col);
-        if (cells[i])
-            return;
 
         numberOfOpenSites++;
         cells[i] = true;
@@ -44,8 +46,10 @@ public class Percolation {
         int iBelow = i +n;
         if (row == 1) {
             uf.union(i, topVirtualNode);
+            backwashuf.union(i, topVirtualNode);
         } else if (isOpen(iAbove)) {
             uf.union(iAbove, i);
+            backwashuf.union(iAbove, i);
         }
         if (row == n) {
             uf.union(i, bottomVirtualNode);
@@ -54,11 +58,15 @@ public class Percolation {
         }
 
         // left - right
-        if (col > 1 && isOpen(i -1)) {
-            uf.union(i -1, i);
+        int left = i - 1;
+        if (col > 1 && isOpen(left)) {
+            uf.union(left, i);
+            backwashuf.union(left, i);
         }
-        if (col < n && isOpen(i +1)) {
-            uf.union(i +1, i);
+        int right = i + 1;
+        if (col < n && isOpen(right)) {
+            uf.union(right, i);
+            backwashuf.union(right, i);
         }
     }
 
@@ -89,7 +97,8 @@ public class Percolation {
      * @see #isOpen(int, int)
      */
     public boolean isFull(int row, int col) {
-        return isOpen(row, col) && uf.find(xyTo1D(row, col)) == uf.find(topVirtualNode);
+        int i = xyTo1D(row, col);
+        return cells[i] && backwashuf.find(i) == backwashuf.find(topVirtualNode);
     }
 
     /**

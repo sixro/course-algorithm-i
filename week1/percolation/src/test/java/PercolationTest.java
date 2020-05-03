@@ -87,7 +87,6 @@ public class PercolationTest {
     }
 
     @Test
-    @Ignore
     public void backwash() {
         Percolation p = new Percolation(3);
         p.open(1, 1);
