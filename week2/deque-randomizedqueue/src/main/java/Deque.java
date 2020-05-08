@@ -31,7 +31,7 @@ public class Deque<Item> implements Iterable<Item> {
             throw new IllegalArgumentException("item is required");
 
         Node<Item> old = first;
-        first = new Node(item);
+        first = new Node<>(item);
         first.next = old;
         if (size != 0) {
             old.prev = first;
@@ -86,7 +86,7 @@ public class Deque<Item> implements Iterable<Item> {
 
     // return an iterator over items in order from front to back
     public Iterator<Item> iterator() {
-        return new Deque.NodeIterator(first);
+        return new Deque.NodeIterator<>(first);
     }
 
     // unit testing (required)
@@ -121,11 +121,11 @@ public class Deque<Item> implements Iterable<Item> {
         }
     }
 
-    public class NodeIterator implements Iterator<Item> {
+    private static class NodeIterator<Item> implements Iterator<Item> {
         private final Node<Item> first;
         private Node<Item> curr;
 
-        public NodeIterator(Node<Item> first) {
+        NodeIterator(Node<Item> first) {
             this.first = first;
             this.curr = null;
         }
