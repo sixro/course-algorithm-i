@@ -105,7 +105,7 @@ public class Deque<Item> implements Iterable<Item> {
     }
 
     private static class Node<Item> {
-        private Item item;
+        private final Item item;
         private Deque.Node<Item> prev;
         private Deque.Node<Item> next;
 
