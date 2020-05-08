@@ -1,3 +1,5 @@
+import edu.princeton.cs.algs4.StdOut;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -28,22 +30,14 @@ public class Deque<Item> implements Iterable<Item> {
         if (item == null)
             throw new IllegalArgumentException("item is required");
 
-        if (item.equals("1")) {
-            System.out.println("DEBUG");
-        }
         Node<Item> old = first;
         first = new Node(item);
         first.next = old;
-        if (old != null) {
+        if (size != 0) {
             old.prev = first;
-        }
-        if (size == 0) {
+        } else {
             last = first;
-        } else if (size == 1) {
-            last = old;
-            last.prev = first;
         }
-        System.out.println("addFirst DEBUG: last: " + last + ", first: " + first);
         size++;
     }
 
@@ -54,17 +48,12 @@ public class Deque<Item> implements Iterable<Item> {
         Node<Item> old = last;
         last = new Node<>(item);
         last.prev = old;
-        if (old != null) {
+        if (size != 0) {
             old.next = last;
+        } else {
+            first = last;
         }
 
-        if (size == 0) {
-            first = last;
-        } else if (size == 1) {
-            first = old;
-            first.next = last;
-        }
-        System.out.println("addLast DEBUG: last: " + last + ", first: " + first);
         size++;
     }
 
@@ -72,7 +61,6 @@ public class Deque<Item> implements Iterable<Item> {
     public Item removeFirst() {
         if (isEmpty())
             throw new NoSuchElementException();
-        System.out.println("removeFirst DEBUG: last: " + last + ", first: " + first);
         Item ret = first.item;
         first = first.next;
         if (first != null) {
@@ -87,8 +75,6 @@ public class Deque<Item> implements Iterable<Item> {
         if (isEmpty())
             throw new NoSuchElementException();
 
-        System.out.println("removeLast DEBUG: last: " + last + ", first: " + first);
-
         Item ret = last.item;
         last = last.prev;
         if (last != null) {
@@ -100,12 +86,22 @@ public class Deque<Item> implements Iterable<Item> {
 
     // return an iterator over items in order from front to back
     public Iterator<Item> iterator() {
-        return null;
+        return new Deque.NodeIterator(first);
     }
 
     // unit testing (required)
     public static void main(String[] args) {
-
+        Deque<String> d = new Deque<>();
+        d.addFirst("A");
+        StdOut.println(d.removeLast());
+        d.addLast("B");
+        StdOut.println(d.removeFirst());
+        d.addFirst("B");
+        d.addLast("C");
+        d.addFirst("A");
+        for (String each: d) {
+            StdOut.println(each);
+        }
     }
 
     private static class Node<Item> {
@@ -122,8 +118,33 @@ public class Deque<Item> implements Iterable<Item> {
            return "Node{" + "item=" + item + ", prev=" + (prev != null ?
                 prev.item : null) + ", " +
                 "next=" + (next != null ? next.item : null) + '}';
-//            return "Node{" + "item=" + item + ", prev=" + prev + ", " +
-//                "next=" + next + '}';
+        }
+    }
+
+    public class NodeIterator implements Iterator<Item> {
+        private final Node<Item> first;
+        private Node<Item> curr;
+
+        public NodeIterator(Node<Item> first) {
+            this.first = first;
+            this.curr = null;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return curr == null || curr.next != null;
+        }
+
+        @Override
+        public Item next() {
+            if (curr == null) {
+                curr = first;
+            } else {
+                curr = curr.next;
+            }
+            if (curr == null)
+                throw new NoSuchElementException();
+            return curr.item;
         }
     }
 }
