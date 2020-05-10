@@ -77,7 +77,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         throw new UnsupportedOperationException();
     }
 
-    protected int randomIdx() {
+    private int randomIdx() {
         while (true) {
             int idx = StdRandom.uniform(size);
             if (items[idx] != null)

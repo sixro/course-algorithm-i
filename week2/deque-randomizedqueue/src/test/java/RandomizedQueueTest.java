@@ -29,37 +29,6 @@ public class RandomizedQueueTest {
     }
 
     @Test
-    public void random_pos_is_0() {
-        RandomizedQueue<String> rq = new RandomizedQueue<String>() {
-            @Override
-            protected int randomIdx() {
-                return 0;
-            }
-        };
-        rq.enqueue("A");
-        rq.enqueue("B");
-        rq.enqueue("C");
-        String sample = rq.dequeue();
-        assertEquals(2, rq.size());
-        assertEquals("A", sample);
-    }
-
-    @Test
-    public void random_pos_is_size() {
-        RandomizedQueue<String> rq = new RandomizedQueue<String>() {
-            @Override
-            protected int randomIdx() {
-                return 2;
-            }
-        };
-        rq.enqueue("A");
-        rq.enqueue("B");
-        rq.enqueue("C");
-        String sample = rq.dequeue();
-        assertEquals("C", sample);
-    }
-
-    @Test
     public void iterator() {
         RandomizedQueue<String> rq = new RandomizedQueue<>();
         rq.enqueue("A");
