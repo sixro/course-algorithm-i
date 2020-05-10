@@ -9,7 +9,7 @@ public class Permutation {
         int k = Integer.parseInt(args[0]);
         RandomizedQueue<String> queue = new RandomizedQueue<>();
         try {
-            for (int i = 0; i < k; i++) {
+            while (true) {
                 String s = StdIn.readString();
                 //System.err.println("Read: " + s);
                 queue.enqueue(s);
@@ -18,6 +18,8 @@ public class Permutation {
         }
 
         for (String each: queue) {
+            if (k-- == 0)
+                break;
             StdOut.println(each);
         }
     }
