@@ -9,8 +9,11 @@ public class Permutation {
         int k = Integer.parseInt(args[0]);
         RandomizedQueue<String> queue = new RandomizedQueue<>();
         try {
-            for (int i = 0; i < k; k++)
-                queue.enqueue(StdIn.readString());
+            for (int i = 0; i < k; i++) {
+                String s = StdIn.readString();
+                //System.err.println("Read: " + s);
+                queue.enqueue(s);
+            }
         } catch (NoSuchElementException e) {
         }
 

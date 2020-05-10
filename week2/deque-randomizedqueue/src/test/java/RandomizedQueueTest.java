@@ -1,3 +1,4 @@
+import edu.princeton.cs.algs4.StdOut;
 import org.junit.Test;
 
 import java.util.NoSuchElementException;
@@ -58,5 +59,17 @@ public class RandomizedQueueTest {
         RandomizedQueue<Integer> rq = new RandomizedQueue<>();
         rq.enqueue(20);
         rq.dequeue();
+    }
+
+    @Test public void multiple_iterators() {
+        int n = 100;
+        RandomizedQueue<Integer> queue = new RandomizedQueue<>();
+        for (int i = 0; i < n; i++)
+            queue.enqueue(i);
+        for (int a : queue) {
+            for (int b : queue)
+                StdOut.print(a + "-" + b + " ");
+            StdOut.println();
+        }
     }
 }

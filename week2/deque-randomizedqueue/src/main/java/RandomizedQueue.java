@@ -93,14 +93,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         It(Item[] source, int size) {
             this.copied = (Item[]) new Object[size];
             System.arraycopy(source, 0, copied, 0, size);
-
-            for (int i = 1; i < copied.length; i++) {
-                int randomIdx = StdRandom.uniform(i + 1);
-
-                Item tmp = copied[i];
-                copied[i] = copied[randomIdx];
-                copied[randomIdx] = tmp;
-            }
+            StdRandom.shuffle(copied);
         }
 
         @Override
