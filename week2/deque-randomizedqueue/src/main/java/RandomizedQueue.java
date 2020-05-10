@@ -90,7 +90,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         private final Item[] copied;
         private int index;
 
-        public It(Item[] source, int size) {
+        It(Item[] source, int size) {
             this.copied = (Item[]) new Object[size];
             System.arraycopy(source, 0, copied, 0, size);
 
@@ -110,6 +110,9 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
         @Override
         public Item next() {
+            if (!hasNext())
+                throw new NoSuchElementException();
+
             Item ret = copied[index];
             index++;
             return ret;
