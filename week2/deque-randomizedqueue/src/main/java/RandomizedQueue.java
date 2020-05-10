@@ -4,11 +4,11 @@ import java.util.Iterator;
 
 public class RandomizedQueue<Item> implements Iterable<Item> {
 
-    private Node<Item> first;
+    private Item[] items;
     private int size;
 
     public RandomizedQueue() {
-        this.first = null;
+        this.items = (Item[]) new Object[1];
         this.size = 0;
     }
 
@@ -21,77 +21,88 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
     public void enqueue(Item item) {
+        if (size == items.length)
+            enlarge();
+        items[size] = item;
         size++;
-        if (first == null) {
-            first = new Node<>(item);
-            return;
-        }
-
-        Node<Item> old = first;
-        first = new Node<>(item);
-        first.next = old;
     }
 
     public Item dequeue() {
+        int idx = randomIdx();
+        Item ret = items[idx];
         size--;
 
-        int idx = randomIdx();
-        if (idx == 0) {
-            Item value = first.item;
-            first = first.next;
-            return value;
-        }
-        Node<Item> prevnode = nodeAt(idx -1);
-        Item value = prevnode.next.item;
-        prevnode.next = prevnode.next.next;
-        return value;
+        items[idx] = items[size];
+        items[size] = null;
+        if (size <= items.length / 4)
+            shrink();
+
+        return ret;
     }
 
     public Item sample() {
-        int idx = randomIdx();
-        Node<Item> node = nodeAt(idx);
-        return node.item;
+        return items[randomIdx()];
+    }
+
+    private void enlarge() {
+        resize(items.length * 2);
+    }
+
+    private void shrink() {
+        resize(items.length / 2);
+    }
+
+    private void resize(int newSize) {
+        Item[] resized = (Item[]) new Object[newSize];
+        for (int i = 0; i < items.length; i++)
+            resized[i] = items[i];
+        items = resized;
     }
 
     public Iterator<Item> iterator() {
-        throw new UnsupportedOperationException();
+        return new It<>(items, size);
     }
 
     public static void main(String[] args) {
         throw new UnsupportedOperationException();
     }
 
-    private Node<Item> nodeAt(int idx) {
-        int i = 0;
-        Node<Item> cursor = first;
-        while (i++ < idx) cursor = cursor.next;
-        return cursor;
-    }
-
     protected int randomIdx() {
-        return StdRandom.uniform(size);
+        while (true) {
+            int idx = StdRandom.uniform(size);
+            if (items[idx] != null)
+                return idx;
+        }
     }
 
-    @Override
-    public String toString() {
-        return "RandomizedQueue{size=" + size + ", first=" + first + "}";
-    }
+    private static class It<Item> implements Iterator<Item> {
 
-    private static class Node<Item> {
-        private final Item item;
-        private Node<Item> prev;
-        private Node<Item> next;
+        private final Item[] copied;
+        private int index;
 
-        private Node(Item i) {
-            this.item = i;
+        public It(Item[] source, int size) {
+            this.copied = (Item[]) new Object[size];
+            System.arraycopy(source, 0, copied, 0, size);
+
+            for (int i = 1; i < copied.length; i++) {
+                int randomIdx = StdRandom.uniform(i + 1);
+
+                Item tmp = copied[i];
+                copied[i] = copied[randomIdx];
+                copied[randomIdx] = tmp;
+            }
         }
 
         @Override
-        public String toString() {
-            return "Node{" + "item=" + item + ", prev=" + (prev != null ?
-                prev.item : null) + ", " +
-                "next=" + (next != null ? next.item : null) + '}';
+        public boolean hasNext() {
+            return index < copied.length;
+        }
+
+        @Override
+        public Item next() {
+            Item ret = copied[index];
+            index++;
+            return ret;
         }
     }
-
 }
