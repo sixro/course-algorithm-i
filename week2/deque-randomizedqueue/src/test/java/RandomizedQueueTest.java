@@ -1,5 +1,7 @@
 import org.junit.Test;
 
+import java.util.NoSuchElementException;
+
 import static org.junit.Assert.*;
 
 public class RandomizedQueueTest {
@@ -65,6 +67,21 @@ public class RandomizedQueueTest {
         rq.enqueue("C");
         String sample = rq.iterator().next();
         assertTrue(sample.equals("A") || sample.equals("B") || sample.equals("C"));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void enqueue_null() {
+        new RandomizedQueue<String>().enqueue(null);
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void dequeue_when_empty() {
+        new RandomizedQueue<String>().dequeue();
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void sample_when_empty() {
+        new RandomizedQueue<String>().sample();
     }
 
 }
