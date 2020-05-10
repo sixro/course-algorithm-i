@@ -129,6 +129,12 @@ public class DequeTest {
         it.next();
     }
 
-    // TODO main as expected by assignment
+    @Test(expected = NoSuchElementException.class)
+    public void iterator_error() {
+        Deque<Integer> deque = new Deque<Integer>();
+        deque.addLast(1);
+        deque.removeLast();
+        deque.iterator().next();
+    }
 
 }

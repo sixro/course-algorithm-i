@@ -53,4 +53,10 @@ public class RandomizedQueueTest {
         new RandomizedQueue<String>().sample();
     }
 
+    @Test
+    public void enq_1_element() {
+        RandomizedQueue<Integer> rq = new RandomizedQueue<>();
+        rq.enqueue(20);
+        rq.dequeue();
+    }
 }

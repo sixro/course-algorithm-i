@@ -67,6 +67,8 @@ public class Deque<Item> implements Iterable<Item> {
             first.prev = null;
         }
         size--;
+        if (size == 0)
+            first = last = null;
         return ret;
     }
 
@@ -81,6 +83,8 @@ public class Deque<Item> implements Iterable<Item> {
             last.next = null;
         }
         size--;
+        if (size == 0)
+            first = last = null;
         return ret;
     }
 
@@ -132,16 +136,12 @@ public class Deque<Item> implements Iterable<Item> {
 
         @Override
         public boolean hasNext() {
-            return curr == null || curr.next != null;
+            return curr != null ? curr.next != null : first != null;
         }
 
         @Override
         public Item next() {
-            if (curr == null) {
-                curr = first;
-            } else {
-                curr = curr.next;
-            }
+            curr = curr != null ? curr.next : first;
             if (curr == null)
                 throw new NoSuchElementException();
             return curr.item;
