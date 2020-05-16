@@ -50,9 +50,13 @@ public class Point implements Comparable<Point> {
      * @return the slope between this point and the specified point
      */
     public double slopeTo(Point that) {
-        /* YOUR CODE HERE */
-        // FIXME impl
-        return -1;
+        int dy = that.y - y;
+        int dx = that.x - x;
+        if (dx == 0)
+            return dy > 0 ? Double.POSITIVE_INFINITY : Double.NEGATIVE_INFINITY;
+        if (dy == 0)
+            return 0;
+        return ((double) dy) / dx;
     }
 
     /**
@@ -68,9 +72,10 @@ public class Point implements Comparable<Point> {
      * argument point
      */
     public int compareTo(Point that) {
-        /* YOUR CODE HERE */
-        // FIXME impl
-        return 0;
+        int dy = y - that.y;
+        if (dy != 0)
+            return dy;
+        return x - that.x;
     }
 
     /**
@@ -80,9 +85,7 @@ public class Point implements Comparable<Point> {
      * @return the Comparator that defines this ordering on points
      */
     public Comparator<Point> slopeOrder() {
-        /* YOUR CODE HERE */
-        // FIXME impl
-        return null;
+        return new SlopeComparator(this);
     }
 
 
@@ -105,4 +108,20 @@ public class Point implements Comparable<Point> {
         /* YOUR CODE HERE */
     }
 
+    private static class SlopeComparator implements Comparator<Point> {
+
+        private final Point p0;
+
+        public SlopeComparator(Point p0) {
+            this.p0 = p0;
+        }
+
+        @Override
+        public int compare(Point p1, Point p2) {
+            double delta = p1.slopeTo(p0) - p2.slopeTo(p0);
+            if (delta > 0)
+                return 1;
+            return delta < 0 ? -1 : 0;
+        }
+    }
 }
